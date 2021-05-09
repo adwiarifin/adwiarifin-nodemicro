@@ -12,8 +12,8 @@ process.on('uncaughtException', (e) => {
 });
 
 ////////// DATABASE //////////
-const { MONGO_HOST, MONGO_PORT, MONGO_DB } = process.env;
-const mongoURI = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`;
+const { MONGO_HOST, MONGO_PORT, MONGO_DB, MONGO_URI } = process.env;
+const mongoURI = MONGO_URI || `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`;
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', (error) => debug(error));
