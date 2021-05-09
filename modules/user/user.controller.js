@@ -1,21 +1,32 @@
-const index = (req, res) => {
-    res.sendStatus(200);
+const service = require('./user.service');
+
+const index = async (req, res) => {
+    const result = await service.index();
+    res.json(result);
 }
 
-const show = (req, res) => {
-    res.sendStatus(200);
+const show = async (req, res) => {
+    const { params: { id } } = req;
+    const result = await service.show(id);
+    res.json(result);
 }
 
-const store = (req, res) => {
-    res.sendStatus(200);
+const store = async (req, res) => {
+    const { body } = req;
+    const result = await service.store(body);
+    res.json(result);
 }
 
-const update = (req, res) => {
-    res.sendStatus(200);
+const update = async (req, res) => {
+    const { params: { id }, body } = req;
+    const result = await service.update(id, body);
+    res.json(result);
 }
 
-const destroy = (req, res) => {
-    res.sendStatus(200);
+const destroy = async (req, res) => {
+    const { params: { id } } = req;
+    const result = await service.destroy(id);
+    res.json(result);
 }
 
 module.exports = {
