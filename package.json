@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "DEBUG=adwiarifin-nodemicro:* nodemon index.js"
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "express-group-routes": "^1.1.0",
     "ioredis": "^4.27.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.7",
     "uuid": "^8.3.2"
   },
