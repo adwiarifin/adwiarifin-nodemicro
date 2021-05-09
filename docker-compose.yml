@@ -16,6 +16,7 @@ services:
       - .env.dev
     depends_on: 
       - db
+      - cache
 
   db:
     image: mongo:4.2
@@ -24,3 +25,11 @@ services:
       - .dbdata:/data/db
     ports:
       - 27018:27017
+
+  cache:
+    image: redis:6-alpine
+    command: redis-server
+    volumes:
+      - .cachedata:/data
+    ports:
+      - "6380:6379"

@@ -1,7 +1,8 @@
 const service = require('./user.service');
 
 const index = async (req, res) => {
-    const result = await service.index();
+    const { query } = req;
+    const result = await service.index(query);
     res.json(result);
 }
 

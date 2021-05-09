@@ -117,3 +117,4 @@ dist
 
 # db data
 .dbdata
+.cachedata

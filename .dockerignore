@@ -1,4 +1,5 @@
 .git/
 .dbdata/
+.cachedata/
 node_modules/
 docker-compose*.yml
