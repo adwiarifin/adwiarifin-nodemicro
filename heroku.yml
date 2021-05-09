@@ -1,0 +1,6 @@
+build:
+  docker:
+    web: Dockerfile
+    target: prod
+run:
+  web: node index.js
