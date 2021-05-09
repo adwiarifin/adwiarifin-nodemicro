@@ -1,5 +1,8 @@
-.git/
-.dbdata/
-.cachedata/
-node_modules/
-docker-compose*.yml
+**/.git
+**/.env
+**/.vscode
+**/.editorconfig
+**/node_modules/
+**/.dbdata/
+**/.cachedata/
+**/docker-compose*

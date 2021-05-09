@@ -1,20 +1,17 @@
-FROM node:12-alpine as prod
+FROM node:12-alpine as base
 
 WORKDIR /app
-
 COPY package*.json .
-
-RUN npm install
-
-COPY . .
-
-ENV NODE_ENV=production
-
-# DEV CONFIG
-FROM prod as dev
-
 EXPOSE 3000
 
-RUN npm install -g nodemon
+FROM base as prod
+ENV NODE_ENV=production
+RUN npm ci
+COPY . .
+CMD ["node", "index.js"]
 
-RUN npm install --only=dev
+FROM base as dev
+ENV NODE_ENV=development
+RUN npm install -g nodemon && npm install
+COPY . .
+CMD ["nodemon", "index.js"]

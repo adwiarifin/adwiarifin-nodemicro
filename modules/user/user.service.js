@@ -1,6 +1,7 @@
 const User = require('./user.model');
 const uuid = require('uuid');
 const cache = require('../../lib/cache');
+const response = require('../../lib/response');
 const ttl = 60 * 5;
 
 const index = async (query) => {
@@ -22,6 +23,20 @@ const store = async (body) => {
         email_address: body.email_address,
         identity_number: body.identity_number,
     }
+
+    // check exists
+    const exists = await User.find({
+        $or: [
+            { user_name: body.user_name },
+            { email_address: body.email_address }
+        ]
+    });
+    if (exists.length > 0) {
+        // throw new Error('Already exists');
+        return response.json(undefined, response.BAD_REQUEST, 'User already exists');
+    }
+
+    // store data
     const user = new User(data);
     const result = await user.save();
 
@@ -29,7 +44,7 @@ const store = async (body) => {
     await cache.set(`user:id:${key}`, result, ttl);
     await cache.del('user:all');
 
-    return result;
+    return response.json(result);
 }
 
 const show = async (id) => {
@@ -37,10 +52,14 @@ const show = async (id) => {
     let result = await cache.get(key);
     if (!result) {
         result = await User.findOne({id});
+        if (result == null) {
+            return response.json(undefined, response.NOT_FOUND, 'Data not found');
+        }
+
         await cache.set(key, result, ttl);
     }
 
-    return result;
+    return response.json(result);
 }
 
 const update = async (id, body) => {
@@ -50,15 +69,23 @@ const update = async (id, body) => {
         { new: true }
     );
 
+    if (result == null) {
+        return response.json(undefined, response.NOT_FOUND, 'Data not found');
+    }
+
     const key = `user:id:${id}`;
     await cache.set(key, result, ttl);
     await cache.del('user:all');
 
-    return result;
+    return response.json(result);
 }
 
 const destroy = async (id) => {
     const result = await User.findOneAndRemove({id});
+
+    if (result == null) {
+        return response.json(undefined, response.NOT_FOUND, 'Data not found');
+    }
 
     const key = `user:id:${id}`;
     await cache.del(key);
@@ -75,7 +102,7 @@ const getAll = async () => {
         await cache.set(key, result, ttl);
     }
     
-    return result;
+    return response.json(result);
 }
 
 const getByAccountNumber = async (accountNumber) => {
@@ -86,7 +113,7 @@ const getByAccountNumber = async (accountNumber) => {
         await cache.set(key, result, ttl);
     }
 
-    return result;
+    return response.json(result);
 }
 
 const getByIdentityNumber = async (identityNumber) => {
@@ -97,7 +124,7 @@ const getByIdentityNumber = async (identityNumber) => {
         await cache.set(key, result, ttl);
     }
 
-    return result;
+    return response.json(result);
 }
 
 module.exports = {

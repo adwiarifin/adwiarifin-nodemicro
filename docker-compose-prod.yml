@@ -5,11 +5,8 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: Dockerfile
       target: prod
     command: npm start
-    volumes:
-      - .:/app
     ports:
       - 80:3000
     depends_on: 
@@ -19,15 +16,8 @@ services:
   db:
     image: mongo:4.2
     restart: always
-    volumes:
-      - .dbdata:/data/db
-    ports:
-      - 27017:27017
 
   cache:
     image: redis:6-alpine
+    restart: always
     command: redis-server
-    volumes:
-      - .cachedata:/data
-    ports:
-      - "6379:6379"

@@ -5,15 +5,16 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: Dockerfile
       target: dev
-    command: npm run dev
     volumes:
       - .:/app
+    command: npm run dev
     ports:
       - 3001:3000
-    env_file: 
-      - .env.dev
+    env_file: .env.dev
+    environment: 
+      NODE_ENV: development
+      DEBUG: adwiarifin-nodemicro:*
     depends_on: 
       - db
       - cache
@@ -28,6 +29,7 @@ services:
 
   cache:
     image: redis:6-alpine
+    restart: always
     command: redis-server
     volumes:
       - .cachedata:/data
