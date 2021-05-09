@@ -1,0 +1,4 @@
+.git/
+.dbdata/
+node_modules/
+docker-compose*.yml
